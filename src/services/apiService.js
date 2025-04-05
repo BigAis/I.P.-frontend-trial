@@ -11,7 +11,7 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   },
-  timeout: 10000 // Increase timeout to 10 seconds
+  timeout: 15000
 });
 
 // Request interceptor to add auth token
@@ -21,36 +21,10 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
-    console.log('API Request:', {
-      url: config.url,
-      method: config.method,
-      hasToken: !!token
-    });
     return config;
   },
   (error) => {
     console.error('Request interceptor error:', error);
-    return Promise.reject(error);
-  }
-);
-
-// Response interceptor for logging and error handling
-apiClient.interceptors.response.use(
-  (response) => {
-    console.log('API Response:', {
-      url: response.config.url,
-      status: response.status,
-      data: response.data ? 'Data received' : 'No data'
-    });
-    return response;
-  },
-  (error) => {
-    console.error('API Error:', {
-      url: error.config?.url,
-      status: error.response?.status,
-      message: error.message,
-      data: error.response?.data
-    });
     return Promise.reject(error);
   }
 );

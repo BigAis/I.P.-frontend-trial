@@ -7,6 +7,10 @@ $secondary-border: #dad2c6;
 $secondary-background: #FFF8EF;
 $text-color: #000000;
 
+// Colors for active states (avoiding deprecated darken function)
+$primary-active: #e55a53;  // Manually darkened version of primary-border
+$secondary-active: #c4bdae;  // Manually darkened version of secondary-border
+
 // Import Inter font if not already imported in the global styles
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -50,7 +54,7 @@ $text-color: #000000;
   }
   
   &:active:not(:disabled) {
-    background-color: darken($primary-border, 5%);
+    background-color: $primary-active;
   }
 }
 
@@ -64,6 +68,6 @@ $text-color: #000000;
   }
   
   &:active:not(:disabled) {
-    background-color: darken($secondary-border, 5%);
+    background-color: $secondary-active;
   }
 }
