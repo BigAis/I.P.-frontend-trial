@@ -1,0 +1,55 @@
+// Variables
+$primary-border: #FF645D;
+$primary-background: #FFDAC6;
+$secondary-border: #dad2c6;
+$secondary-background: #FFF8EF;
+$text-color: #000000;
+
+// Common button styles
+.styled-button {
+  padding: 0.75rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: $text-color;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  border-width: 2px;
+  border-style: solid;
+  
+  // Disabled state
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Primary button variant
+.styled-button.primary {
+  background-color: $primary-background;
+  border-color: $primary-border;
+  
+  &:hover:not(:disabled) {
+    background-color: $primary-border;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(255, 100, 93, 0.3);
+  }
+}
+
+// Secondary button variant
+.styled-button.secondary {
+  background-color: $secondary-background;
+  border-color: $secondary-border;
+  
+  &:hover:not(:disabled) {
+    background-color: $secondary-border;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(218, 210, 198, 0.3);
+  }
+}

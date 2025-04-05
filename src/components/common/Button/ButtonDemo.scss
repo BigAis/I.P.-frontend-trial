@@ -1,0 +1,123 @@
+.button-demo-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    
+    h2 {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .demo-description {
+      text-align: center;
+      margin-bottom: 2rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #555;
+    }
+  }
+  
+  .color-specs {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    
+    h3 {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      list-style: none;
+      padding: 0;
+      
+      li {
+        display: flex;
+        align-items: center;
+        
+        .color-box {
+          width: 20px;
+          height: 20px;
+          margin-right: 10px;
+          border-radius: 4px;
+          border: 1px solid #ddd;
+          
+          &.primary-border {
+            background-color: #FF645D;
+          }
+          
+          &.primary-bg {
+            background-color: #FFDAC6;
+          }
+          
+          &.secondary-border {
+            background-color: #dad2c6;
+          }
+          
+          &.secondary-bg {
+            background-color: #FFF8EF;
+          }
+          
+          &.text {
+            background-color: #000000;
+          }
+        }
+      }
+    }
+  }
+  
+  .buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+  
+  .button-showcase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    
+    h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .button-description {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+    }
+    
+    .hover-demo {
+      position: relative;
+      
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+      
+      &.primary button {
+        background-color: #FF645D;
+      }
+      
+      &.secondary button {
+        background-color: #dad2c6;
+      }
+    }
+  }

@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+// Variables
+$primary-color: #FF645D;
+$primary-background: #FFDAC6;
+$secondary-border: #dad2c6;
+$secondary-background: #FFF8EF;
+$text-color: #333;
+$background-color: #f9f9f9;
+$border-color: #ddd;
+$error-color: #d9534f;
+$success-color: #5cb85c;
+$warning-color: #856404;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: $text-color;
+  background-color: $background-color;
+}
+
+// Common form styles
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  
+  label {
+    font-weight: 500;
+  }
+  
+  input {
+    padding: 0.75rem;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    font-size: 1rem;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba(255, 100, 93, 0.2);
+    }
+  }
+}
+
+// Message styles
+.success-message {
+  color: $success-color;
+  padding: 1rem;
+  background-color: #f2f9f2;
+  border: 1px solid #d6e9c6;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.error-message {
+  color: $error-color;
+  padding: 1rem;
+  background-color: #f9f2f2;
+  border: 1px solid #ebccd1;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.warning-message {
+  color: $warning-color;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 4px;
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+// Container styles
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: 2rem 0;
+}
