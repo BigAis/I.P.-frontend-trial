@@ -19,34 +19,63 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Login function
-  const login = async (username, password) => {
-    setIsLoading(true);
-    setError(null);
+// Login function
+const login = async (username, password) => {
+  setIsLoading(true);
+  setError(null);
+  
+  try {
+    console.log('Attempting to login with credentials:', { username });
     
-    try {
-      const response = await axios.post('https://dev.cobaltfairy.online/api/login', {
-        username,
-        password
-      });
-      
-      // Assuming the JWT is returned in the response data
-      const jwt = response.data.token;
-      
-      // Save token to state and localStorage
-      setToken(jwt);
-      localStorage.setItem('jwt', jwt);
-      setIsAuthenticated(true);
-      setIsLoading(false);
-      
-      return true;
-    } catch (err) {
-      setError('Login failed: ' + (err.response?.data?.message || err.message));
-      setIsLoading(false);
-      setIsAuthenticated(false);
-      return false;
+    // Try to connect to the actual API - no fallback, we need a real token
+    const response = await axios.post('https://dev.cobaltfairy.online/api/login', {
+      username,
+      password
+    }, {
+      // Add headers that might help with CORS issues
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      // Add a timeout to avoid hanging requests
+      timeout: 5000
+    });
+    
+    console.log('Login API response:', response.data);
+    
+    // Assuming the JWT is returned in the response data
+    const jwt = response.data.token;
+    
+    if (!jwt) {
+      console.error('No token received from the API');
+      throw new Error('No authentication token received from the server');
     }
-  };
+    
+    console.log('JWT token received successfully');
+    
+    // Save token to state and localStorage
+    setToken(jwt);
+    localStorage.setItem('jwt', jwt);
+    setIsAuthenticated(true);
+    setIsLoading(false);
+    
+    return true;
+  } catch (err) {
+    console.error('Login error details:', err);
+    
+    if (err.code === 'ECONNABORTED') {
+      setError('Login failed: Request timed out. The API server might be down.');
+    } else if (err.message.includes('Network Error')) {
+      setError('Login failed: Network Error - Could not connect to the API server. Please check your internet connection or the API might be down.');
+    } else {
+      setError('Login failed: ' + (err.response?.data?.message || err.message));
+    }
+    
+    setIsLoading(false);
+    setIsAuthenticated(false);
+    return false;
+  }
+};
 
   // Logout function
   const logout = () => {

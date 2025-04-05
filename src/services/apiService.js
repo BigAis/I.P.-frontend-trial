@@ -16,11 +16,19 @@ apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('jwt');
     if (token) {
+      // Use 'Bearer ' prefix for the token - this is standard format for JWT auth
       config.headers['Authorization'] = `Bearer ${token}`;
     }
+    console.log('API Request:', {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data
+    });
     return config;
   },
   (error) => {
+    console.error('Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
@@ -41,7 +49,9 @@ export const authService = {
 export const postsService = {
   getPosts: async () => {
     try {
-      const response = await apiClient.get('/posts');
+      const response = await apiClient.get('/posts', {
+        timeout: 5000 // Add timeout to avoid hanging requests
+      });
       return response.data;
     } catch (error) {
       throw error;
@@ -53,7 +63,9 @@ export const postsService = {
 export const usersService = {
   createUser: async (userData) => {
     try {
-      const response = await apiClient.post('/users', userData);
+      const response = await apiClient.post('/users', userData, {
+        timeout: 5000 // Add timeout to avoid hanging requests
+      });
       return response.data;
     } catch (error) {
       throw error;
