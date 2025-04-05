@@ -1,6 +1,18 @@
+// src/components/common/Button/Button.jsx
 import PropTypes from 'prop-types';
 import './Button.scss';
 
+/**
+ * Styled button component with primary and secondary variants
+ * 
+ * @param {Object} props - Component props
+ * @param {string} [props.variant='primary'] - Button variant ('primary' or 'secondary')
+ * @param {ReactNode} props.children - Button content
+ * @param {Function} [props.onClick] - Click handler function
+ * @param {string} [props.type='button'] - Button type ('button', 'submit', or 'reset')
+ * @param {boolean} [props.disabled=false] - Whether the button is disabled
+ * @param {string} [props.className=''] - Additional CSS classes
+ */
 const Button = ({
   variant = 'primary',
   children,
@@ -17,7 +29,7 @@ const Button = ({
   const buttonVariant = validVariants.includes(variant) ? variant : 'primary';
   
   // Combine classes
-  const buttonClassName = `styled-button ${buttonVariant} ${className}`;
+  const buttonClassName = `styled-button ${buttonVariant} ${className}`.trim();
   
   return (
     <button

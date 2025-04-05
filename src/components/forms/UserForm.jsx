@@ -1,3 +1,4 @@
+// src/components/forms/UserForm.jsx
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { usersService } from '../../services/apiService';
@@ -13,6 +14,9 @@ const UserForm = () => {
     phone: ''
   });
 
+  // Form validation state
+  const [formErrors, setFormErrors] = useState({});
+
   // Submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState({
@@ -24,6 +28,32 @@ const UserForm = () => {
   // Get authentication state
   const { isAuthenticated } = useContext(AuthContext);
 
+  // Validate form
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    
+    if (!formData.surname.trim()) {
+      errors.surname = 'Surname is required';
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email is invalid';
+    }
+    
+    if (!formData.phone.trim()) {
+      errors.phone = 'Phone is required';
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +61,24 @@ const UserForm = () => {
       ...prev,
       [name]: value
     }));
+    
+    // Clear error when field is edited
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: null
+      }));
+    }
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm()) {
+      return;
+    }
     
     // Reset submission state
     setIsSubmitting(true);
@@ -51,40 +94,15 @@ const UserForm = () => {
         throw new Error('You must be logged in to submit this form');
       }
       
-      try {
-        // Try to submit to the API
-        const result = await usersService.createUser(formData);
-        
-        // Update success state
-        setSubmitResult({
-          success: true,
-          error: null,
-          data: result
-        });
-      } catch (apiError) {
-        console.error('API submission error:', apiError);
-        
-        // For the technical trial, provide mock successful response if API is unavailable
-        if (apiError.message.includes('Network Error')) {
-          console.log('Using mock submission response due to API unavailability');
-          
-          // Generate a mock response
-          const mockResult = {
-            id: Math.floor(Math.random() * 1000) + 1, // Generate random ID between 1-1000
-            name: formData.name,
-            ...formData
-          };
-          
-          setSubmitResult({
-            success: true,
-            error: null,
-            data: mockResult
-          });
-        } else {
-          // If it's not a network error, throw it to be caught by the outer catch
-          throw apiError;
-        }
-      }
+      // Submit form data via service
+      const result = await usersService.createUser(formData);
+      
+      // Update success state
+      setSubmitResult({
+        success: true,
+        error: null,
+        data: result
+      });
       
       // Reset form
       setFormData({
@@ -94,6 +112,8 @@ const UserForm = () => {
         phone: ''
       });
     } catch (error) {
+      console.error('Form submission error:', error);
+      
       // Update error state
       setSubmitResult({
         success: false,
@@ -111,7 +131,11 @@ const UserForm = () => {
       
       {submitResult.success && submitResult.data && (
         <div className="success-message">
-          User created successfully! ID: {submitResult.data.id}, Name: {submitResult.data.name}
+          <strong>Success!</strong> User created successfully!
+          <div className="success-details">
+            <p>ID: {submitResult.data.id}</p>
+            <p>Name: {submitResult.data.name} {submitResult.data.surname}</p>
+          </div>
         </div>
       )}
       
@@ -122,7 +146,7 @@ const UserForm = () => {
       )}
       
       <form onSubmit={handleSubmit} className="user-form">
-        <div className="form-group">
+        <div className={`form-group ${formErrors.name ? 'has-error' : ''}`}>
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -130,11 +154,12 @@ const UserForm = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
+            disabled={!isAuthenticated}
           />
+          {formErrors.name && <span className="error">{formErrors.name}</span>}
         </div>
         
-        <div className="form-group">
+        <div className={`form-group ${formErrors.surname ? 'has-error' : ''}`}>
           <label htmlFor="surname">Surname</label>
           <input
             type="text"
@@ -142,11 +167,12 @@ const UserForm = () => {
             name="surname"
             value={formData.surname}
             onChange={handleChange}
-            required
+            disabled={!isAuthenticated}
           />
+          {formErrors.surname && <span className="error">{formErrors.surname}</span>}
         </div>
         
-        <div className="form-group">
+        <div className={`form-group ${formErrors.email ? 'has-error' : ''}`}>
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -154,11 +180,12 @@ const UserForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
+            disabled={!isAuthenticated}
           />
+          {formErrors.email && <span className="error">{formErrors.email}</span>}
         </div>
         
-        <div className="form-group">
+        <div className={`form-group ${formErrors.phone ? 'has-error' : ''}`}>
           <label htmlFor="phone">Phone</label>
           <input
             type="tel"
@@ -166,8 +193,9 @@ const UserForm = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            required
+            disabled={!isAuthenticated}
           />
+          {formErrors.phone && <span className="error">{formErrors.phone}</span>}
         </div>
         
         <Button

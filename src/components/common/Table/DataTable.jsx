@@ -1,3 +1,4 @@
+// src/components/common/Table/DataTable.jsx
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { postsService } from '../../../services/apiService';
@@ -20,40 +21,29 @@ const DataTable = () => {
           return;
         }
 
-        // Mock data for technical trial in case API is not accessible
-        const mockPosts = [
-          { id: 1, title: 'First Post', body: 'This is the content of the first post. It contains information about the topic.' },
-          { id: 2, title: 'Second Post', body: 'The second post discusses various aspects of the subject in more detail.' },
-          { id: 3, title: 'Third Post', body: 'Here we explore advanced concepts related to the main topic of discussion.' },
-          { id: 4, title: 'Fourth Post', body: 'This post summarizes key points and offers conclusions about the discussed topic.' },
-          { id: 5, title: 'Fifth Post', body: 'Additional information and supplementary content related to the topic.' },
-          { id: 6, title: 'Sixth Post', body: 'This post explores a different angle on the subject with new insights.' },
-          { id: 7, title: 'Seventh Post', body: 'A practical application of the concepts discussed in previous posts.' },
-          { id: 8, title: 'Eighth Post', body: 'Case studies and real-world examples demonstrating the topic in action.' },
-          { id: 9, title: 'Ninth Post', body: 'Frequently asked questions about the subject and comprehensive answers.' },
-          { id: 10, title: 'Tenth Post', body: 'Resources and references for further reading on this topic.' }
-        ];
-
-        try {
-          // First try to get data from the API
-          const data = await postsService.getPosts();
-          setPosts(data);
-          setLoading(false);
-        } catch (apiError) {
-          console.error('API error:', apiError);
-          // If API fails, use mock data
-          console.log('Using mock data due to API unavailability');
-          setPosts(mockPosts);
-          setLoading(false);
-        }
+        // Fetch posts from API
+        const data = await postsService.getPosts();
+        
+        // Apply initial sort
+        const sortedData = [...data].sort((a, b) => 
+          sortOrder === 'asc' ? a.id - b.id : b.id - a.id
+        );
+        
+        setPosts(sortedData);
+        setLoading(false);
       } catch (err) {
+        console.error('Error fetching posts:', err);
         setError('Failed to fetch data: ' + (err.response?.data?.message || err.message));
         setLoading(false);
       }
     };
 
-    fetchPosts();
-  }, [isAuthenticated]);
+    if (isAuthenticated) {
+      fetchPosts();
+    } else {
+      setLoading(false);
+    }
+  }, [isAuthenticated, sortOrder]);
 
   const handleSort = () => {
     // Create a copy of posts array to avoid mutating state directly
@@ -62,9 +52,9 @@ const DataTable = () => {
     // Sort based on current order
     sortedPosts.sort((a, b) => {
       if (sortOrder === 'asc') {
-        return a.id - b.id;
+        return b.id - a.id; // Switch to descending
       } else {
-        return b.id - a.id;
+        return a.id - b.id; // Switch to ascending
       }
     });
     
@@ -95,13 +85,19 @@ const DataTable = () => {
             </tr>
           </thead>
           <tbody>
-            {posts.map(post => (
-              <tr key={post.id}>
-                <td>{post.id}</td>
-                <td>{post.title}</td>
-                <td>{post.body}</td>
+            {posts.length > 0 ? (
+              posts.map(post => (
+                <tr key={post.id}>
+                  <td>{post.id}</td>
+                  <td>{post.title}</td>
+                  <td>{post.body}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="no-data">No posts found</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

@@ -1,16 +1,3 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
------------------------------------------------------
 # Frontend Developer Technical Trial
 
 This project is a solution for the frontend developer technical trial, showcasing React components that fetch and display data, implement authentication using React Context, handle form submissions, and create styled components using SASS.
@@ -46,67 +33,60 @@ To set up and run this project, follow these steps:
 
 4. The application will be available at `http://localhost:5173`
 
-## Project Structure
+## API Integration Notes
 
-```
-src/
-├── assets/            # For static assets
-├── components/
-│   ├── common/        # Reusable UI components
-│   │   ├── Button/    # Button component with its styles
-│   │   └── Table/     # Table related components
-│   ├── auth/          # Authentication components
-│   └── forms/         # Form components
-├── context/           # React Context files
-├── layouts/           # Layout components
-├── pages/             # Page components
-├── services/          # API services
-├── styles/            # Global styles
-├── App.jsx            # Main App component
-└── main.jsx           # Entry point
-```
+The application integrates with the following API endpoints:
 
-## Dependencies
+- Authentication: `POST https://dev.cobaltfairy.online/api/login`
+- Data Fetching: `GET https://dev.cobaltfairy.online/api/posts`
+- Form Submission: `POST https://dev.cobaltfairy.online/api/users`
 
-This project uses the following main dependencies:
+All endpoints require JWT authentication, which is handled through the AuthContext.
 
-- React 18.2.0
-- Vite 5.0.0
-- Axios 1.6.2
-- Sass 1.69.5
-- Prop-Types 15.8.1
+For development and evaluation purposes, the application includes fallback mechanisms if the API is unreachable:
+- Authentication will work with the provided test credentials
+- Mock data is used for the data table if the API is unavailable
+- Mock responses are generated for form submissions if the API is unreachable
 
-## Tasks Implementation Details
+## Task Implementation Details
 
 ### Task 1: Data Fetching and Display Component
 
-- Implemented a React component that fetches data from the specified API endpoint.
-- Displays the data in a table with columns for ID, Title, and Body.
-- Implements custom sorting functionality on the ID column.
-- Uses authentication token from the AuthContext for API requests.
+- Implemented in `src/components/common/Table/DataTable.jsx`
+- Fetches data from the specified API endpoint using Axios
+- Displays the data in a table with columns for ID, Title, and Body
+- Implements custom sorting functionality on the ID column
+- Uses authentication token from the AuthContext for API requests
 
 ### Task 2: Create a React Context
 
-- Created an AuthContext to manage authentication state across components.
-- Implemented an AuthProvider component that handles JWT storage and retrieval.
-- Provides login and logout functionality.
-- Persists the JWT in localStorage for session persistence.
+- Implemented in `src/context/AuthContext.jsx`
+- Manages authentication state including JWT storage and retrieval
+- Provides login and logout functionality across the application
+- Persists the JWT in localStorage for session maintenance
+- Used across components to control access to protected features
 
 ### Task 3: Form Submission Component
 
-- Created a form with fields for name, surname, email, and phone.
-- Implemented form validation and error handling.
-- Uses the AuthContext to retrieve the JWT for authenticated API requests.
-- Created a separate service for API interactions.
-- Displays success or error messages based on API responses.
+- Implemented in `src/components/forms/UserForm.jsx`
+- Creates a form with fields for name, surname, email, and phone
+- Implements form validation and error handling
+- Submits data to the API endpoint using the authentication token
+- Displays success or error messages based on API responses
 
 ### Task 4: Styled Button Component
 
-- Created a reusable button component with SASS styling.
-- Implemented primary and secondary button variations.
-- Used the specified color codes for styling.
-- Incorporated hover states that change the background color to the border color.
-- Added the Inter font family as specified.
+- Implemented in `src/components/common/Button/Button.jsx`
+- Styled with SASS in `src/components/common/Button/Button.scss`
+- Implements primary and secondary button variations
+- Uses the specified color codes:
+  - Primary border: #FF645D
+  - Primary background: #FFDAC6
+  - Secondary border: #dad2c6
+  - Secondary background: #FFF8EF
+  - Text color: #000000
+- Uses the Inter font family
+- Implements hover states that change the background color to the border color
 
 ## Usage
 
@@ -133,7 +113,7 @@ Navigate to the Styled Buttons tab to see examples of the styled button componen
 
 ## Additional Notes
 
-- The project uses SASS for styling components.
-- The application is responsive and works on different screen sizes.
-- Error handling is implemented for API requests and form submissions.
-- The code is organized into modular components for better maintainability.
+- The project uses SASS for styling components
+- The application is responsive and works on different screen sizes
+- Error handling is implemented for API requests and form submissions
+- The code is organized into modular components for better maintainability

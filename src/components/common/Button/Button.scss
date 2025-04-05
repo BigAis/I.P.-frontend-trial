@@ -1,9 +1,14 @@
-// Variables
+// src/components/common/Button/Button.scss
+
+// Variables as per task requirements
 $primary-border: #FF645D;
 $primary-background: #FFDAC6;
 $secondary-border: #dad2c6;
 $secondary-background: #FFF8EF;
 $text-color: #000000;
+
+// Import Inter font if not already imported in the global styles
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 // Common button styles
 .styled-button {
@@ -18,11 +23,20 @@ $text-color: #000000;
   outline: none;
   border-width: 2px;
   border-style: solid;
+  text-align: center;
+  display: inline-block;
+  line-height: 1.5;
   
   // Disabled state
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+  
+  // Focus state for accessibility
+  &:focus-visible {
+    outline: 2px solid rgba(0, 0, 0, 0.4);
+    outline-offset: 2px;
   }
 }
 
@@ -35,8 +49,8 @@ $text-color: #000000;
     background-color: $primary-border;
   }
   
-  &:focus {
-    box-shadow: 0 0 0 3px rgba(255, 100, 93, 0.3);
+  &:active:not(:disabled) {
+    background-color: darken($primary-border, 5%);
   }
 }
 
@@ -49,7 +63,7 @@ $text-color: #000000;
     background-color: $secondary-border;
   }
   
-  &:focus {
-    box-shadow: 0 0 0 3px rgba(218, 210, 198, 0.3);
+  &:active:not(:disabled) {
+    background-color: darken($secondary-border, 5%);
   }
 }
