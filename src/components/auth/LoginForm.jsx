@@ -59,7 +59,7 @@ const LoginForm = () => {
           <div className="login-info">
             <h3>Test Credentials:</h3>
             <p>Username: dev1</p>
-            <p>Password: 12cf#$!34</p>
+            <p>Password: 12cf#$!@34</p>
           </div>
         </form>
       )}

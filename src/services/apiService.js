@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Base URL for API
-const API_BASE_URL = 'https://dev.cobaltfairy.online/api';
+const API_BASE_URL = '/api';
 
 // Create axios instance with base URL
 const apiClient = axios.create({

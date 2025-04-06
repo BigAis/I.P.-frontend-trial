@@ -12,7 +12,7 @@ export const login = async (username, password) => {
     // Make a direct request to the API
     const response = await axios({
       method: 'post',
-      url: 'https://dev.cobaltfairy.online/api/login',
+      url: "/api/login",
       data: {
         username,
         password

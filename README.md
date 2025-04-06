@@ -95,7 +95,7 @@ For development and evaluation purposes, the application includes fallback mecha
 The application starts with a login screen. Use the following credentials to log in:
 
 - Username: `dev1`
-- Password: `12cf#$!34`
+- Password: `12cf#$!@34`
 
 After successful login, you'll be able to access the data table and submit the user form.
 
